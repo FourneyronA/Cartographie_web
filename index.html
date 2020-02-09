@@ -10,11 +10,20 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<!-- intégration fichier css -->
-		<link rel="stylesheet" href="leaflet/leaflet.css" />
 		<link rel="stylesheet" href="assets/css/main.css" />
+		<link rel="stylesheet" href="leaflet/leaflet.css" />
+
 		<!-- intégration fichier JS -->
-		<script src="leaflet/leaflet.js"> </script>
-		 <script type="text/javascript" src="leaflet/leaflet-glicer-animated.js"></script>
+		<script type="text/javascript" src="leaflet/leaflet.js"> </script>
+		<script type="text/javascript" src="leaflet/leaflet-glicer-animated.js"></script>
+		<script type="text/javascript" src="leaflet/fonction_choropleth.js" > </script>
+
+		<!-- intégration bibiothèque plugin pour dessiner -->
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.2.3/leaflet.draw.css"/>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.2.3/leaflet.draw.js"></script>
+
+		<!-- Ajouter les markers animés -->
+		<script src="assets/js/MovingMarker.js"></script>
 		
 	</head>
 	<body class="is-preload">
@@ -22,12 +31,12 @@
 		<!-- Header -->
 			<section id="header">
 				<header>
-					<span class="image avatar"><img src="images/MasterGeonum.png" alt="" /></span>
+					 <span class="image avatar"><img src="images/MasterGeonum.png" alt="" /></span> 
 					<h1 id="logo"><a href="#">Projet WebCarto</a></h1>
-					<p>	<ul>Réalisé.es par :
-						<li>Bénédicte Thomas (duo préféré)</li>
-						<li>Flavie Blard (le soleil de geonum)</li>
-						<li>Axel Fourneyron (#glouglou) </li>
+					<p>	<ul>Réalisé.e.s par :
+						<li>Bénédicte Thomas</li>
+						<li>Flavie Blard</li>
+						<li>Axel Fourneyron</li>
 					</ul></p>
 				</header>
 				<nav id="nav">
@@ -41,7 +50,7 @@
 					<a href="webcarto.pdf" class="button primary icon solid fa-download" download="Document_recapitulatif_Flavie_Benedicte_Axel">Document récapitulatif </a>
 				</nav>
 			</section>
-
+			<!-- -->
 		<!-- Wrapper -->
 			<div id="wrapper">
 
@@ -49,6 +58,7 @@
 					<div id="main">
 
 						<!-- Two -->
+						
 							<section id="two">
 								<div class="container">
 									<h3>Consigne et objectif du projet</h3>
@@ -70,20 +80,29 @@
 									</ul>
 								</div>
 							</section>
-
+					
 						<!-- Three -->
+						
 							<section id="three">
 								<div class="container">
 									<h3>Cartographies des tram de Lyon</h3>
 									<p>Vous pouvez visualiser l'ensemble des station de métro, mais aussi permettre de comprendre les différents revenues par IRIS. <br>
 									Pour mettre un peu dynamisme il est possible de voir l'etendue à 30mètre d'une station, mais aussi de pouvoir créer différents point repères le long d'une ligne de tram.</p>
 								</div>	
+								
 									<div id='map'> </div>
+									<div id='info'> </div>
 									<div class="container">
-										<p>Vous pouvez visualiser l'ensemble des station de métro, mais aussi permettre de comprendre les différents revenues par IRIS. <br>
-										Pour mettre un peu dynamisme il est possible de voir l'etendue à 30mètre d'une station, mais aussi de pouvoir créer différents point repères le long d'une ligne de tram.</p>
-									</div>	
+										<p> Cette cartogrpahie propose la visualisation de différentes données concernant la métropole de Lyon. <br>
+											Tout d'abord, des données concernant les transports avec :
+											<ul> <li>Les lignes de métro</li>
+												<li>Les stations auto-partage et une zone de 300m autour d'elles</li></ul>
 
+											Aussi, des données sociales avec le taux de chômage par IRIS.
+
+											Enfin, il est possible de créer des lignes sur la cartographie.</p>
+									</div>	
+								
 									
 						
 							</section>
@@ -92,8 +111,7 @@
 			
 						
 
-					</div>
-<br>	
+					</div>	
 				<!-- Footer -->
 					<section id="footer">
 						<div class="container">
@@ -107,9 +125,12 @@
 
 			</div>
 
-		<!-- Scripts -->
+		<!-- Scripts cartographies -->
+		<script src="data_geojson.js"></script>
 		<script src="map.js"></script>
+		
 
+		<!-- Scripts style -->
 			<script src="assets/js/jquery.min.js"></script>
 			<script src="assets/js/jquery.scrollex.min.js"></script>
 			<script src="assets/js/jquery.scrolly.min.js"></script>

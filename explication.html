@@ -16,14 +16,14 @@
 		<!-- Header -->
 			<section id="header">
 				<header>
-					<span class="image avatar"><img src="images/MasterGeonum.png" alt="" /></span>
-					<h1 id="logo"><a href="#">Projet WebCarto</a></h1>
-					<p>	<ul>Réaliser par :
-						<li>Bénédicte Thomas (duo préféré)</li>
-						<li>Flavie Blard (le soleil de geonum)</li>
-						<li>Axel Fourneyron (#glouglou) </li>
-					</ul></p>
-				</header>
+					<span class="image avatar"><img src="images/MasterGeonum.png" alt="" /></span> 
+				   <h1 id="logo"><a href="#">Projet WebCarto</a></h1>
+				   <p>	<ul>Réalisé.e.s par :
+					   <li>Bénédicte Thomas</li>
+					   <li>Flavie Blard</li>
+					   <li>Axel Fourneyron</li>
+				   </ul></p>
+			   </header>
 				<nav id="nav">
 					<ul>
 						<li><a href="index.html#two" >Les objectifs du projet</a></li>
@@ -47,33 +47,97 @@
 									<h3>Explication dans les grandes lignes du code liée à la cartographie</h3>
 
 									<section>
-										<h4>Partie intégration carto dans le site</h4>
-										<blockquote>Blablabla, il faut le .JS, blablabla il faut le .css et blablabla il faut mettre une balise dans le html pour appeler le JS et CSS et leaflet</blockquote>
-										<h7>code css</h7>
+										<h4>Option 1</h4>
+										<blockquote>Ajouter un marqueur animé le long des lignes de métro</blockquote>
+										<h7>code js</h7>
 										<pre><code>
-#map_school {
-	text-align : justify ;
-	float : left ;
-	width: 100%;
-	padding-left : 5%;
-	height: 350px;
-	border : 5px solid #585858 ;
+// Fonction marqueur animé 
+// Récupération des coorodonnées des lignes de métros
+function addMarker(feature, layer) {
+var coordinates = [];
+for (var i=0; i < feature.geometry.coordinates[0].length; i++) {
+	coordinates.push(feature.geometry.coordinates[0][i].reverse())
 }
+var polyligne = L.polyline(coordinates);
+// Ajout d'une icône personnalisée pour chaque ligne (concaténation selon le nom de la ligne), avec réglage de taille, animation en continu avec l'option loop
+var animatedMarker = L.Marker.movingMarker(polyligne.getLatLngs(), 10000, {
+	autostart: true,
+	loop: true,
+	icon: L.icon({
+	iconUrl: layer.feature.properties.ligne+'.png',
+	iconSize : [58,28]
+	})
+}).addTo(animation);
+}
+animation.addTo(map);
 										</code></pre>
 											
 										<hr />
-										<h4>Partie gestion des données</h4>
-										<blockquote>Olalala </blockquote>
-										<h7>code css</h7>
+										<h4>Option 2</h4>
+										<blockquote>Ajouter des zones tampons de 300m au survol des stations auto-partage + mise en valeur de la station (par un changement de taille, de couleur ou de représentation)</blockquote>
+										<h7>code js</h7>
 										<pre><code>
-var1 = "coucou je suis une variable" ;
+// Option 2 -- Ajouter une zone tampon de 300m visible au survol des stations auto-partage + mise en valeur de la station
+
+var buffer;
+
+function highlightStation(e) {
+	var layer = e.target;
+	layer.setStyle({
+		radius: layer.feature.properties.nbemplacem*1.5,
+		weight: 2,
+		color: '#666',
+		fillOpacity: 0.7
+	});
+	buffer = L.circle(layer.getLatLng(), {radius: 300}).addTo(map);
+}
+
+function resetStation(e) {
+	var layer = e.target;
+	layer.setStyle(setStyleStation(layer.feature));
+	map.removeLayer(buffer);
+}
+
+function overStation(feature, layer) {
+	layer.on({
+		mouseover: highlightStation,
+		mouseout: resetStation
+	});
+}
 										</code></pre>
 										<hr />
-										<h4>Partie gestion des couches </h4>
-										<blockquote>Mouahahahahahh je fait n'importe quoi</blockquote>
-										<h7>code css</h7>
+										<h4>Option 3</h4>
+										<blockquote>Proposer une fonction de dessin de ligne.</blockquote>
+										<h7>code js</h7>
 										<pre><code>
-library('SuperTablibliotheque')
+var editableLayers = new L.FeatureGroup();
+map.addLayer(editableLayers);
+
+
+var options = {
+	position: 'topleft',
+	draw: {
+	polyline: {
+		shapeOptions: {
+		color: '#f357a1',
+		weight: 10
+			}
+	},
+	// Choix des fonctionnalités visibles : dans notre cas = polyline
+	polyline: true,
+	circle: false,
+	polygon: false,
+	marker: false,
+	rectangle: false,
+	},
+	edit: {
+	featureGroup: editableLayers, //OBLIGATOIRE
+	remove: true
+	}
+};
+// Initialisé le draw control, permettre son édition dans le FeatureGroup
+var drawControl = new L.Control.Draw(options);
+map.addControl(drawControl);
 										</code></pre>
 								
 
